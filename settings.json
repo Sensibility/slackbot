@@ -1,29 +1,24 @@
 {
 	"modules":
-	[
-		"mumble"
-	],
+	{
+		"mumble":
+		{
+			"admins":
+			[
+				"ocket8888",
+				"admin"
+			],
+			"moderators":
+			[
+				"leif",
+				"ty"
+			]
+		}
+	},
 	"paths":
 	{
 		"secrets": "./slackbot/secrets.json",
 		"core": "./core/",
 		"modules": "./modules"
-	},
-	"admins":
-	{
-		"mumble":
-		[
-			"ocket8888",
-			"admin"
-		]
-	},
-	"moderators":
-	{
-		"mumble":
-		[
-			"jean",
-			"leif"
-		]
 	}
-	
 }
