@@ -1,6 +1,29 @@
 {
 	"modules":
 	[
-		"MySQL"
-	]
+		"mumble"
+	],
+	"paths":
+	{
+		"secrets": "./slackbot/secrets.json",
+		"core": "./core/",
+		"modules": "./modules"
+	},
+	"admins":
+	{
+		"mumble":
+		[
+			"ocket8888",
+			"admin"
+		]
+	},
+	"moderators":
+	{
+		"mumble":
+		[
+			"jean",
+			"leif"
+		]
+	}
+	
 }
