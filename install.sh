@@ -5,11 +5,19 @@ IFLAG=false
 SFLAG=false
 
 #get options
-while getopts his option
+while getopts a:A:his option
 do	case "$option" in
+	a)
+		APIKEY=$OPTARG
+		;;
+	A)
+		APIKEY=$(cat $OPTARG)
+		;;
 	h)
-		echo "Usage: install.sh [-his]"
+		echo "Usage: install.sh [-his] [-a <api-key>] [-A <api-key file>]"
 		echo "======= Options ========"
+		echo "a : Specify your slack api token for setup."
+		echo "A : Specify a file containing your api token for setup"
 		echo "h : Display this help text and exit."
 		echo "i : Install dependancies (will attempt to determine your package manager if necessary, but yum is NOT supported)."
 		echo "s : systemd-less install (bot daemon will be placed in /var/www/botd)."
@@ -137,7 +145,7 @@ fi
 echo "\tPip version 3+ found..."
 
 
-#pip is version 3+
+#systemd is installed
 if [ ! -d /lib/systemd/system/ ]
 then
 	if [ $SFLAG == false ]
@@ -147,10 +155,58 @@ then
 		exit 3
 	fi
 	SYSTEMD=false
-	echo "Systemd not detected... " >2
 fi
 
 echo "Done."
 
 
 
+#Library installation
+echo "installing python libraries..."
+
+pip3 install pep3143daemon
+pip3 install slacker
+
+echo "Done."
+
+echo "Installing Asymptote..."
+
+if [ $PKG == apt ]
+then
+	apt-get install asymptote
+elif [ $PKG == pac ]
+then
+	pacman -S asymptote
+fi
+
+echo "Done."
+
+#creating user
+echo "Creating slackbot user..."
+useradd -M slackbot
+echo "Done."
+
+
+echo "Setting up files and directories..."
+#Directory setup
+mkdir -P /var/www/slackbot
+mv commander.py /var/www/slackbot
+mv core /var/www/slackbot/
+mv modules /var/www/slackbot/
+mv botd /var/www/slackbot/
+if [ $SFLAG == false ]
+then
+	mv slackbot.service /lib/systemd/system/
+fi
+touch /var/log/slackbot.log
+touch /var/run/slackbot.pid
+mkdir -P /etc/slackbot
+echo $APIKEY > /etc/slackbot/API
+
+#permissions setup
+chown -R slackbot:slackbot /var/www/slackbot/
+chown slackbot:slackbot /var/log/slackbot.log
+chown slackbot:slackbot /var/run/slackbot.pid
+chown -R slackbot:slackbot /etc/slackbot/
+
+echo "Done."
