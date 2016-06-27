@@ -1,0 +1,7 @@
+[Service]
+Type=simple
+PIDFile=/var/run/slackbot.pid
+ExecStart=/var/www/slackbot/botd
+ExecReload=/bin/kill $MAINPID; /var/www/slackbot/botd
+ExecStop=/bin/kill $MAINPID
+
