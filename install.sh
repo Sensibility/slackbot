@@ -1,8 +1,8 @@
 #!/bin/sh
 
 #Command-line options
-IFLAG=false
-SFLAG=false
+IFLAG='f'
+SFLAG='f'
 
 #get options
 while getopts a:A:his option
@@ -24,10 +24,10 @@ do	case "$option" in
 		exit 0
 		;;
 	i)
-		IFLAG=true
+		IFLAG='t'
 		;;
 	s)
-		SFLAG=true
+		SFLAG='t'
 		;;
 	[?])
 		echo "Try 'install.sh -h' for help"
@@ -55,19 +55,16 @@ fi
 
 
 #if -i is specified, we must find a package manager
-if [ $IFLAG == true ]
+if [ $(which apt-get) ]
 then
-	if [ $(which apt-get) ]
-	then
-		PKG=apt
-	elif [ $(which pacman) ]
-	then
-		PKG=pac
-	else
-		echo "-i option was specified, but a suitable package manager could not be found."
-		echo "Either install dependancies manually, or continue without the -i option."
-		exit 4
-	fi
+	PKG='apt'
+elif [ $(which pacman) ]
+then
+	PKG='pac'
+else
+	echo "-i option was specified, but a suitable package manager could not be found."
+	echo "Either install dependancies manually, or continue without the -i option."
+	exit 4
 fi
 	
 
@@ -84,14 +81,14 @@ then
 	if [ $(which python3) ]
 	then
 		ln -s /usr/bin/python $(which python3)
-	elif [ $IFLAG == false ]
+	elif [ $IFLAG = 'f' ]
 	then
 		echo "You do not appear to have python in your `$PATH`, if you would like us to try to install it run 'install.sh -i', otherwise you must either install it yourself or ensure that it is in your `$PATH`."
 		exit 3
-	elif [ $PKG == apt ]
+	elif [ $PKG = 'apt' ]
 	then
 		apt-get install python3 && ln -s /usr/bin/python /usr/bin/python3
-	elif [ $PKG == pac ]
+	elif [ $PKG = 'pac' ]
 	then
 		pacman -S python3 && ln -s /usr/bin/python /usr/bin/python3
 	fi
@@ -103,16 +100,16 @@ echo "\tPython found..."
 #python is version 3+
 if [ $(python --version | sed 's/.*\s//' | sed 's/\..*//') != 3 ]
 then
-	if [ $IFLAG == true ]
+	if [ $IFLAG = 't' ]
 	then
 		echo "CAUTION: /usr/bin/python is being made a symlink to python3, if this was previously a symlink to python2 some of your scripts may break."
 		if [ $(which python3) ]
 		then
 			ln -s /usr/bin/python $(which python3)
-		elif [ $PKG == apt ]
+		elif [ $PKG = 'apt' ]
 		then
 			apt-get install python3 && ln -s /usr/bin/python /usr/bin/python3
-		elif [ $PKG == pac ]
+		elif [ $PKG = 'pac' ]
 		then
 			pacman -S python3 && ln -s /usr/bin/python /usr/bin/python3
 		fi
@@ -128,12 +125,13 @@ echo "\tPython is version 3+..."
 #pip is version 3+
 if [ ! $(which pip3) ]
 then
-	if [ $IFLAG == true ]
+	if [ $IFLAG = 't' ]
 	then
-		if [ $PKG == apt ]
+		if [ $PKG = 'apt' ]
 		then
 			apt-get install python-pip3
-		elif [ $PKG == pac ]
+		elif [ $PKG = 'pac' ]
+		then
 			pacman -S python-pip3
 		fi
 	else
@@ -148,13 +146,13 @@ echo "\tPip version 3+ found..."
 #systemd is installed
 if [ ! -d /lib/systemd/system/ ]
 then
-	if [ $SFLAG == false ]
+	if [ $SFLAG = 'f' ]
 	then
 		echo "You do not have systemd, if you wish to install anyway, run this script with the '-s' option"
 		echo "NOTE: bot daemon will be placed in /var/www/slackbot/botd"
 		exit 3
 	fi
-	SYSTEMD=false
+	SYSTEMD='f'
 fi
 
 echo "Done."
@@ -170,11 +168,11 @@ pip3 install slacker
 echo "Done."
 
 echo "Installing Asymptote..."
-
-if [ $PKG == apt ]
+echo "DEBUG:: $PKG"
+if [ $PKG = 'apt' ]
 then
 	apt-get install asymptote
-elif [ $PKG == pac ]
+elif [ $PKG = 'pac' ]
 then
 	pacman -S asymptote
 fi
@@ -189,18 +187,18 @@ echo "Done."
 
 echo "Setting up files and directories..."
 #Directory setup
-mkdir -P /var/www/slackbot
+mkdir -p /var/www/slackbot
 mv commander.py /var/www/slackbot
 mv core /var/www/slackbot/
 mv modules /var/www/slackbot/
 mv botd /var/www/slackbot/
-if [ $SFLAG == false ]
+if [ $SFLAG = 'f' ]
 then
 	mv slackbot.service /lib/systemd/system/
 fi
 touch /var/log/slackbot.log
 touch /var/run/slackbot.pid
-mkdir -P /etc/slackbot
+mkdir -p /etc/slackbot
 echo $APIKEY > /etc/slackbot/API
 
 #permissions setup
