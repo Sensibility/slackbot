@@ -179,12 +179,6 @@ fi
 
 echo "Done."
 
-#creating user
-echo "Creating slackbot user..."
-useradd -M slackbot
-echo "Done."
-
-
 echo "Setting up files and directories..."
 #Directory setup
 mkdir -p /var/www/slackbot
@@ -199,12 +193,11 @@ fi
 touch /var/log/slackbot.log
 touch /var/run/slackbot.pid
 mkdir -p /etc/slackbot
-echo $APIKEY > /etc/slackbot/API
-
-#permissions setup
-chown -R slackbot:slackbot /var/www/slackbot/
-chown slackbot:slackbot /var/log/slackbot.log
-chown slackbot:slackbot /var/run/slackbot.pid
-chown -R slackbot:slackbot /etc/slackbot/
+if [ ! -z $APIKEY ]
+then
+	echo $APIKEY > /etc/slackbot/API
+else
+	touch /etc/slackbot/API
+fi
 
 echo "Done."

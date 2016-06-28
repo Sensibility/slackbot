@@ -2,25 +2,23 @@
 
 from pep3143daemon import DaemonContext as Daemon, PidFile
 from slacker import Slacker
-
-pidfile = PidFile('/var/run/slackbot.pid');
+from pwd import getpwnam
 
 print("Slackbot daemon starting up... ");
-print("Pid file located at: /var/run/slackbot.pid");
+
+pidfile = PidFile('/var/run/slackbot.pid');
 pidfile.acquire();
+
+print("Pid file located at: /var/run/slackbot.pid");
+
 daemon = Daemon(pidfile=pidfile,stdout=open('/var/log/slackbot.log',mode='w'), stderr=open('/var/log/slackbot.log',mode='w'));
 
-print("no but srsl, wtf?");
 daemon.open();
 
 slackbot = Slacker(open('/etc/slackbot/API').read().strip());
-print("wtf?");
+
 while(True):
-	response = slackbot.users.list().body['members'];
-	print("I'm a demon daemon :D");
+	response = slackbot.users.list();
 	slackbot.chat.post_message('#general','MEMES');
-	slackbot.chat.post_message('#general', response);
-
-
-print("we did it");
+	print('#general', response);
 
