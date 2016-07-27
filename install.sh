@@ -167,15 +167,14 @@ pip3 install slacker
 
 echo "Done."
 
-echo "Installing Asymptote..."
-echo "DEBUG:: $PKG"
-if [ $PKG = 'apt' ]
-then
-	apt-get install asymptote
-elif [ $PKG = 'pac' ]
-then
-	pacman -S asymptote
-fi
+echo "Installing l2p..."
+BUILD-DIR=$(mktemp -d)
+cd $BUILD-DIR
+wget http://redsymbol.net/static/software/l2p/dist/l2p-1.1.1.tgz
+tar -xvf ./l2p-1.1.1.tgz
+mv ./l2p-1.1.1/l2p /usr/bin/
+cd -
+rm -rf $BUILD-DIR
 
 echo "Done."
 
