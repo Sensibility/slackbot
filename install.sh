@@ -129,10 +129,10 @@ then
 	then
 		if [ $PKG = 'apt' ]
 		then
-			apt-get install python-pip3
+			apt-get install python3-pip
 		elif [ $PKG = 'pac' ]
 		then
-			pacman -S python-pip3
+			pacman -S python3-pip
 		fi
 	else
 		echo "Pip version 3+ could not be found, you must install pip3 or use the '-i' option."
