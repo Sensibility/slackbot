@@ -1,11 +1,8 @@
 #!/usr/bin/python
 
 from pep3143daemon import DaemonContext as Daemon, PidFile
-<<<<<<< HEAD
-from commander import Commander
-=======
 from slacker import Slacker
->>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7
+
 from pwd import getpwnam
 
 print("Slackbot daemon starting up... ");
@@ -19,13 +16,7 @@ daemon = Daemon(pidfile=pidfile,stdout=open('/var/log/slackbot.log',mode='w'), s
 
 daemon.open();
 
-<<<<<<< HEAD
-#slackbot = Slacker(open('/etc/slackbot/API').read().strip());
-
-
-=======
 slackbot = Slacker(open('/etc/slackbot/API').read().strip());
->>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7
 
 while(True):
 	response = slackbot.users.list();
