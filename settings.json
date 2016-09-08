@@ -1,0 +1,19 @@
+{
+	"modules":
+	{
+		"slack":
+		{
+			"admins":
+			[
+				"crusherexe"
+			],
+			"token": "/etc/slackbot/API"
+		}
+	},
+	"paths":
+	{
+		"secrets": "./etc/slackbot/secrets.json",
+		"core": "./core/",
+		"modules": "./modules"
+	}
+}

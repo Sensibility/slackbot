@@ -1,0 +1,26 @@
+#!/usr/bin/python
+
+from pep3143daemon import DaemonContext as Daemon, PidFile
+from commander import Commander
+from pwd import getpwnam
+
+print("Slackbot daemon starting up... ");
+
+pidfile = PidFile('/var/run/slackbot.pid');
+pidfile.acquire();
+
+print("Pid file located at: /var/run/slackbot.pid");
+
+daemon = Daemon(pidfile=pidfile,stdout=open('/var/log/slackbot.log',mode='w'), stderr=open('/var/log/slackbot.log',mode='w'));
+
+daemon.open();
+
+#slackbot = Slacker(open('/etc/slackbot/API').read().strip());
+
+
+
+while(True):
+	response = slackbot.users.list();
+	slackbot.chat.post_message('#general','MEMES');
+	print('#general', response);
+
