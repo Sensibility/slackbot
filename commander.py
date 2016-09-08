@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 
 import json, sys
+=======
+import json
+>>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7
 
 class Commander():
 	def __init__(self, settingsFile = 'settings.json'):
@@ -17,6 +21,7 @@ class Commander():
 		self.modulesPath = "./modules/"
 		self.secretsPath = "./secrets.json"
 
+<<<<<<< HEAD
 		#modules is a dictionary that contains:
 		#moduleName: moduleSettings
 		self.modules = {}
@@ -32,11 +37,21 @@ class Commander():
 		#		self.processModules()
 		#	elif(setting == 'paths'):
 		#		self.processPaths()
+=======
+	#Loop over all of the settings and perform any necesary actions
+	def processSettings(self):
+		for setting in self.settings:
+			if(setting == 'modules'):
+				self.processModules()
+			elif(setting == 'paths'):
+				self.processPaths()
+>>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7
 
 	#Detect all of the modules that are activated, we will start them when the
 	#entire settings file has been read in
 	def processModules(self):
 		for module in self.settings['modules']:
+<<<<<<< HEAD
 			self.modules[module] = self.settings['modules'][modules]
 
 		keys = self.modules.keys()
@@ -50,6 +65,10 @@ class Commander():
 		for key in keys:
 			self.runningModules[key] = getattr(key, "class_name")()
 
+=======
+			if(module == "mumble"):
+				self.processMumble()
+>>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7
 
 	#Detect all of the paths to various files such as the secrets file and where
 	#the core and modules are
@@ -62,6 +81,21 @@ class Commander():
 			elif(path == 'modules'):
 				self.modulesPath = self.settings['paths'][path]
 
+<<<<<<< HEAD
 
 if __name__ == "__main__":
 	com = Commander()
+=======
+	#Process the mumble module and all of it's features
+	def processMumble(self):
+		print('mumble')
+		for moduleSetting in self.settings['modules']['mumble']:
+			if(moduleSetting in ['admins', 'moderators']):
+				for adMod in self.settings['modules']['mumble'][moduleSetting]:
+					print("admin/moderator: " + str(self.settings['modules']['mumble'][moduleSetting]))
+
+
+
+if __name__ == "__main__":
+	com = Commander()
+>>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7

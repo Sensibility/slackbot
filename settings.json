@@ -1,6 +1,7 @@
 {
 	"modules":
 	{
+<<<<<<< HEAD
 		"slack":
 		{
 			"admins":
@@ -8,12 +9,34 @@
 				"crusherexe"
 			],
 			"token": "/etc/slackbot/API"
+=======
+		"mumble":
+		{
+			"admins":
+			[
+				"ocket8888",
+				"admin"
+			],
+			"moderators":
+			[
+				"leif",
+				"ty"
+			]
+>>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7
 		}
 	},
 	"paths":
 	{
+<<<<<<< HEAD
 		"secrets": "./etc/slackbot/secrets.json",
 		"core": "./core/",
 		"modules": "./modules"
 	}
 }
+=======
+		"secrets": "./slackbot/secrets.json",
+		"core": "./core/",
+		"modules": "./modules"
+	}
+}
+>>>>>>> 6088d7b12210e3a3d1b9da9cffab955da54863a7
