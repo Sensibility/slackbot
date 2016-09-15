@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from pep3143daemon import DaemonContext as Daemon, PidFile
 from slacker import Slacker
@@ -18,8 +18,21 @@ daemon.open();
 
 slackbot = Slacker(open('/etc/slackbot/API').read().strip());
 
-while(True):
-	response = slackbot.users.list();
-	slackbot.chat.post_message('#general','MEMES');
-	print('#general', response);
+users = slackbot.users.list().body['users']
 
+listenChannels = []
+lastheard = {}
+
+for channel in slackbot.channels.list().body['channels']:
+	if channel['is_member']:
+		listenChannels.append(channel)
+		lastheard{channel['id']} = None
+
+while(True):
+	for channel in listenChannels:
+		chat_hist = slackbot.channels.history(channel['id']).body['messages']
+		for message in chat_hist:
+			if lastheard[message['id']] == message[channel['id']]:
+				break
+			if 'text' in message:
+				print(message['text'])

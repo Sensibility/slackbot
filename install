@@ -1,8 +1,8 @@
 #!/bin/sh
 
 #Command-line options
-IFLAG='f'
-SFLAG='f'
+IFLAG=''
+SFLAG=''
 
 #get options
 while getopts a:A:his option
@@ -76,42 +76,30 @@ echo "Checking for dependancies..."
 #####################################
 
 #$PATH/python -> */python3
-if [ ! $(which python) ]
+if [ ! $(which python) ] && [ ! $(which python3) ]
 then
-	if [ $(which python3) ]
-	then
-		ln -s /usr/bin/python $(which python3)
-	elif [ $IFLAG = 'f' ]
+	if [ -n $IFLAG ]
 	then
 		echo "You do not appear to have python in your `$PATH`, if you would like us to try to install it run 'install.sh -i', otherwise you must either install it yourself or ensure that it is in your `$PATH`."
 		exit 3
 	elif [ $PKG = 'apt' ]
 	then
-		apt-get install python3 && ln -s /usr/bin/python /usr/bin/python3
+		apt-get install python3
 	elif [ $PKG = 'pac' ]
 	then
-		pacman -S python3 && ln -s /usr/bin/python /usr/bin/python3
+		pacman -S python3
 	fi
-fi
-
-echo "\tPython found..."
-
-
 #python is version 3+
-if [ $(python --version | sed 's/.*\s//' | sed 's/\..*//') != 3 ]
+elif [ $(python --version | sed 's/.*\s//' | sed 's/\..*//') -ne 3 ]
 then
-	if [ $IFLAG = 't' ]
+	if [ ! -n $IFLAG ]
 	then
-		echo "CAUTION: /usr/bin/python is being made a symlink to python3, if this was previously a symlink to python2 some of your scripts may break."
-		if [ $(which python3) ]
+		if [ $PKG = 'apt' ]
 		then
-			ln -s /usr/bin/python $(which python3)
-		elif [ $PKG = 'apt' ]
-		then
-			apt-get install python3 && ln -s /usr/bin/python /usr/bin/python3
+			apt-get install python3
 		elif [ $PKG = 'pac' ]
 		then
-			pacman -S python3 && ln -s /usr/bin/python /usr/bin/python3
+			pacman -S python3
 		fi
 	else
 		echo "Python is not version 3+, you must link /usr/bin/python to a python3 executable, install python3 and then link, or use the '-i' option."
@@ -125,7 +113,7 @@ echo "\tPython is version 3+..."
 #pip is version 3+
 if [ ! $(which pip3) ]
 then
-	if [ $IFLAG = 't' ]
+	if [ ! -n $IFLAG ]
 	then
 		if [ $PKG = 'apt' ]
 		then
@@ -146,7 +134,7 @@ echo "\tPip version 3+ found..."
 #systemd is installed
 if [ ! -d /lib/systemd/system/ ]
 then
-	if [ $SFLAG = 'f' ]
+	if [ -n $SFLAG ]
 	then
 		echo "You do not have systemd, if you wish to install anyway, run this script with the '-s' option"
 		echo "NOTE: bot daemon will be placed in /var/www/slackbot/botd"
@@ -168,26 +156,27 @@ pip3 install slacker
 echo "Done."
 
 echo "Installing l2p..."
-BUILD-DIR=$(mktemp -d)
-cd $BUILD-DIR
+BUILD_DIR=$(mktemp -d)
+ORIG_DIR=$(pwd)
+cd $BUILD_DIR
 wget http://redsymbol.net/static/software/l2p/dist/l2p-1.1.1.tgz
 tar -xvf ./l2p-1.1.1.tgz
 mv ./l2p-1.1.1/l2p /usr/bin/
-cd -
-rm -rf $BUILD-DIR
+cd $ORIG_DIR
+rm -rf $BUILD_DIR
 
 echo "Done."
 
 echo "Setting up files and directories..."
 #Directory setup
 mkdir -p /var/www/slackbot
-mv commander.py /var/www/slackbot
-mv core /var/www/slackbot/
-mv modules /var/www/slackbot/
-mv botd /var/www/slackbot/
-if [ $SFLAG = 'f' ]
+cp commander.py /var/www/slackbot
+cp core /var/www/slackbot/
+cp modules /var/www/slackbot/
+cp botd /var/www/slackbot/
+if [ -n $SFLAG ]
 then
-	mv slackbot.service /lib/systemd/system/
+	cp slackbot.service /lib/systemd/system/
 fi
 touch /var/log/slackbot.log
 touch /var/run/slackbot.pid
