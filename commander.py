@@ -4,7 +4,7 @@
 #the appropriate function
 
 #fetches patch information
-from modules.patch import *
+from modules.patch.patch import *
 
 #use this to add functions to call
 commands = {'!patch': patchFetch}

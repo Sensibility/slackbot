@@ -1,12 +1,18 @@
 import os.path
 
+dota_synonymns=["dota", "Dota", "dota2", "Dota2"]
+ow_synonymns=["ow", "overwatch", "Overwatch"]
+
+
+#applies any applicable beautification to patch text
 def formatNotes(notes, game):
-	if game == "dota":
+
+	#dota patch beautification
+	if game in dota_synonymns:
 		prettytext = list(filter(None, notes.strip().split("\n")))
 		prettytext = [x.strip() for x in prettytext]
 		textBuilder = []
 		inList = False
-		changeList = []
 		for line in prettytext:
 			formattedLine = line
 			if inList == False and line[0] == "*":
@@ -32,6 +38,38 @@ def formatNotes(notes, game):
 			textBuilder.append("```")
 		prettytext="".join(textBuilder)
 		return prettytext
+
+	#Overwatch patch beautification
+	elif game in ow_synonymns:
+		prettytext=list(filter(None, notes.strip().split("\n")))
+		prettytext=[x.strip() for x in prettytext]
+		textBuilder=[]
+		inList=False
+		for line in prettytext:
+			formattedLine = line
+			if line[0:8] == "Version ":
+				formattedLine = "*_"+line+"_*\n"
+			elif "UPDATES" in line:
+				if inList:
+					inList=False
+					formattedLine="```\n*"+line+"*\n"
+				else:
+					formattedLine="\n*_"+line+"_*\n"
+			elif "Heroes" == line or "General" == line or "Maps" == line: 
+				if inList:
+					formattedLine = "```\n_"+line+"_\n"
+					inList=False
+				else:
+					formattedLine = "\n_"+line+"_\n"
+			elif not inList:
+				formattedLine = ">```"+line+"\n"
+				inList = True
+			else:
+				formattedLine += "\n"
+			textBuilder.append(formattedLine)
+		if inList:
+			textBuilder.append("```")
+		return "".join(textBuilder)
 	else:
 		return notes;
 
