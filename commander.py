@@ -16,3 +16,4 @@ def parseMessage(message, slackAPI, channel):
 	possible_command = args.pop(0)
 	if possible_command in commands:
 		return commands[possible_command](args,slackAPI,channel)
+	

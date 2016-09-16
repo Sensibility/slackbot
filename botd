@@ -28,14 +28,20 @@ lastheard = dict()
 for channel in slackbot.channels.list().body['channels']:
 	if channel['is_member']:
 		listenChannels.append(channel)
-		lastheard[channel['id']] = None
+		lastheard[channel['id']] = -1.0
 
 while(True):
 	for channel in listenChannels:
 		chat_hist = slackbot.channels.history(channel['id']).body['messages']
 		for message in chat_hist:
-			if lastheard[channel['id']] == message['ts']:
+			if "bot_id" in message:
+				continue
+			if lastheard[channel['id']] == float(message['ts']):
 				break
 			if 'text' in message:
-				lastheard[channel['id']] = message['ts']
-				print(parseMessage(message, slackbot, channel))
+				if lastheard[channel['id']] > float(message['ts']):
+					continue
+				lastheard[channel['id']] = float(message['ts'])
+				response=parseMessage(message, slackbot, channel)
+				if response != None:
+					print(response)
