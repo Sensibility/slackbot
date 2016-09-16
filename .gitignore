@@ -90,3 +90,4 @@ ENV/
 
 # Slack bot API key
 secret.txt
+formatTest.py

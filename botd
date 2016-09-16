@@ -5,6 +5,8 @@ from slacker import Slacker
 
 from pwd import getpwnam
 
+from commander import *
+
 print("Slackbot daemon starting up... ");
 
 pidfile = PidFile('/var/run/slackbot.pid');
@@ -18,21 +20,22 @@ daemon.open();
 
 slackbot = Slacker(open('/etc/slackbot/API').read().strip());
 
-users = slackbot.users.list().body['users']
+users = slackbot.users.list().body['members']
 
 listenChannels = []
-lastheard = {}
+lastheard = dict()
 
 for channel in slackbot.channels.list().body['channels']:
 	if channel['is_member']:
 		listenChannels.append(channel)
-		lastheard{channel['id']} = None
+		lastheard[channel['id']] = None
 
 while(True):
 	for channel in listenChannels:
 		chat_hist = slackbot.channels.history(channel['id']).body['messages']
 		for message in chat_hist:
-			if lastheard[message['id']] == message[channel['id']]:
+			if lastheard[channel['id']] == message['ts']:
 				break
 			if 'text' in message:
-				print(message['text'])
+				lastheard[channel['id']] = message['ts']
+				print(parseMessage(message, slackbot, channel))
