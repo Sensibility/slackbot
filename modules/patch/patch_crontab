@@ -1,0 +1,1 @@
+0 * * * * /etc/slackbot/modules/patch/update.sh

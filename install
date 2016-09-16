@@ -90,7 +90,7 @@ then
 		pacman -S python3
 	fi
 #python is version 3+
-elif [ $(python --version | sed 's/.*\s//' | sed 's/\..*//') -ne 3 ]
+elif [ ! $(python --version | sed 's/.*\s//' | sed 's/\..*//') = 3 ]
 then
 	if [ ! -n $IFLAG ]
 	then
@@ -169,10 +169,20 @@ echo "Done."
 
 echo "Setting up files and directories..."
 #Directory setup
-mkdir -p /var/www/slackbot
+mkdir -p /var/www/slackbot/modules
 cp commander.py /var/www/slackbot
-cp core /var/www/slackbot/
-cp modules /var/www/slackbot/
+
+echo "Installing modules..."
+for module in  $(ls ./modules); do
+	if [ -d "modules/$module" ] && [ ! "$module" = "__pycache__" ]; then
+		cd modules/$module
+		./install.sh
+		cd -
+		echo "module $module installed"
+	fi
+done
+echo "...modules installed."
+
 cp botd /var/www/slackbot/
 if [ -n $SFLAG ]
 then
