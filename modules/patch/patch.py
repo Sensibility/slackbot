@@ -41,15 +41,16 @@ def formatNotes(notes, game):
 
 	#Overwatch patch beautification
 	elif game in ow_synonymns:
-		prettytext=list(filter(None, notes.strip().split("\n")))
+		prettytext=notes.strip().split("\n")
 		prettytext=[x.strip() for x in prettytext]
+		prettytext=list(filter(None, prettytext))
 		textBuilder=[]
 		inList=False
 		for line in prettytext:
 			formattedLine = line
 			if line[0:8] == "Version ":
 				formattedLine = "*_"+line+"_*\n"
-			elif "UPDATES" in line:
+			elif "UPDATES" in line or "BUG FIXES" == line:
 				if inList:
 					inList=False
 					formattedLine="```\n*"+line+"*\n"
