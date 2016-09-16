@@ -90,4 +90,7 @@ ENV/
 
 # Slack bot API key
 secret.txt
+
+# My test files
 formatTest.py
+test
