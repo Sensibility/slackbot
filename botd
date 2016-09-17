@@ -42,6 +42,6 @@ while(True):
 				if lastheard[channel['id']] > float(message['ts']):
 					continue
 				lastheard[channel['id']] = float(message['ts'])
-				response=parseMessage(message, slackbot, channel)
+				response=parseMessage(message, slackbot, channel, users)
 				if response != None:
 					print(response)
