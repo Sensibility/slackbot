@@ -7,7 +7,9 @@ Currently, the following two modules are installed:
 ##LaTeX
 This module parses the remainder of any command entered that is prefaced with `!math`
 e.g. `!math $\int_a^b\frac{\mathrm{d}{\mathrm{d}y}x^2dx$ will output the following:
+
 ![screen]
+
 It can be used to parse (somewhat) arbitrary fragments of latex code, not just math,
 though that is its primary use.
 
