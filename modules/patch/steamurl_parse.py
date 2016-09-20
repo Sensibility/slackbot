@@ -18,11 +18,11 @@ elif sys.argv[1]=="post":
 	inList = False
 	for line in prettytext:
 		formattedLine = line
-		if inList == False and line[0] == "*":
+		if inList == False and line[0] in ["*","-"]:
 			inList=True
 			formattedLine=">```"+line[1:]+"\n"
 		elif inList == True:
-			if line[0] == "*":
+			if line[0] in ["*","-"]:
 				formattedLine = line[1:]+"\n"
 			else:
 				inList=False
