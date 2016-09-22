@@ -6,11 +6,13 @@
 #fetches patch information
 from modules.patch.patch import *
 from modules.math.math import uploadLatex
+from modules.recipe.recipe import *
 
 #use this to add functions to call
 commands = {'!patch': patchFetch,
 			'!math': uploadLatex,
-			'!latex': uploadLatex}
+			'!latex': uploadLatex,
+			'!recipe': fetchRecipies}
 
 
 
