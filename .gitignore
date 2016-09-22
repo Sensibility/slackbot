@@ -91,6 +91,8 @@ ENV/
 # Slack bot API key
 secret.txt
 
+slackbot.sublime-*
+
 # My test files
 formatTest.py
 test
