@@ -18,6 +18,11 @@ This module fetches patch notes for the latest patch of a specified game. For ex
 `!patch dota` will fetch the latest Dota2 patch. Currently only dota and overwatch patch
 notes are fetchable.
 
+##recipie
+This module uses the recipepuppy.com search API to find recipies by keyword. Multiple
+keywords can be used, just separate them with spaces e.g. `!recipe baked ham`.
+You can also use `!recipieI` to specify ingredients rather than regular keywords
+
 ##How to use:
 This bot has _ONLY_ been tested on Linux (Mint 17 and Ubuntu 15) and will _NOT_ work
 on Windows. It may be possible to run on Mac, but could require some fiddling.
@@ -31,6 +36,8 @@ Start bot by running `# service slackbot start` or `# /var/www/slackbot/botd` (t
 command allows `systemd` to manage the daemon, if `systemd` is not present on your server
 or you simply do not wish to use it, the script may be run manually by the second command,
 storing its pid in `/var/run/slackbot.pid`)
+
+If you have any questions or concerns, please contact the devs at ocket8888@gmail.com
 
 
 [screen]:http://i.imgur.com/7xbkJ6P.png
