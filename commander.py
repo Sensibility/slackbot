@@ -12,7 +12,8 @@ from modules.recipe.recipe import *
 commands = {'!patch': patchFetch,
 			'!math': uploadLatex,
 			'!latex': uploadLatex,
-			'!recipe': fetchRecipies}
+			'!recipe': fetchRecipiesByQuery,
+			'!recipeI': fetchRecipiesByIngredients}
 
 
 

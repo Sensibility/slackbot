@@ -173,8 +173,6 @@ mkdir -p /var/www/slackbot/modules
 cp commander.py /var/www/slackbot
 
 echo "Installing modules..."
-mkdir -p /var/www/slackbot/modules
-touch /var/www/slackbot/modules/__init__.py
 for module in  $(ls ./modules); do
 	if [ -d "modules/$module" ] && [ ! "$module" = "__pycache__" ]; then
 		cd modules/$module
