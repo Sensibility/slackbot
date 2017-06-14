@@ -2,9 +2,9 @@
 A multi-use extensible bot for the slack api (based on the 'Slacker' slack api implementation)
 Passes commands to separate "modules" for appropriate handling.
 
-Currently, the following two modules are installed:
+Currently, the following three modules are installed:
 
-##LaTeX
+## math
 This module parses the remainder of any command entered that is prefaced with `!math`
 e.g. `!math $\int_a^b\frac{\mathrm{d}{\mathrm{d}y}x^2dx$` will output the following:
 
@@ -13,17 +13,17 @@ e.g. `!math $\int_a^b\frac{\mathrm{d}{\mathrm{d}y}x^2dx$` will output the follow
 It can be used to parse (somewhat) arbitrary fragments of latex code, not just math,
 though that is its primary use.
 
-##patch
+## patch
 This module fetches patch notes for the latest patch of a specified game. For example,
 `!patch dota` will fetch the latest Dota2 patch. Currently only dota and overwatch patch
 notes are fetchable.
 
-##recipie
+## recipie
 This module uses the recipepuppy.com search API to find recipies by keyword. Multiple
 keywords can be used, just separate them with spaces e.g. `!recipe baked ham`.
 You can also use `!recipieI` to specify ingredients rather than regular keywords
 
-##How to use:
+## How to use:
 This bot has _ONLY_ been tested on Linux (Mint 17 and Ubuntu 15) and will _NOT_ work
 on Windows. It may be possible to run on Mac, but could require some fiddling.
 Install from the downloaded directory using:
