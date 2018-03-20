@@ -1,22 +1,12 @@
 #!/usr/bin/python3
 
-from pep3143daemon import DaemonContext as Daemon, PidFile
 from slacker import Slacker
 
 from pwd import getpwnam
 
 from commander import *
 
-print("Slackbot daemon starting up... ");
-
-pidfile = PidFile('/var/run/slackbot.pid');
-pidfile.acquire();
-
-print("Pid file located at: /var/run/slackbot.pid");
-
-daemon = Daemon(pidfile=pidfile,stdout=open('/var/log/slackbot.log',mode='w'), stderr=open('/var/log/slackbot.log',mode='w'));
-
-daemon.open();
+print("Slackbot starting up... ");
 
 slackbot = Slacker(open('/etc/slackbot/API').read().strip());
 
@@ -42,6 +32,6 @@ while(True):
 				if lastheard[channel['id']] > float(message['ts']):
 					continue
 				lastheard[channel['id']] = float(message['ts'])
-				response=parseMessage(message, slackbot, channel, users)
+				response = parseMessage(message, slackbot, channel, users)
 				if response != None:
 					print(response)
