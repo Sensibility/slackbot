@@ -1,5 +1,12 @@
 #!/usr/bin/python3
 
+"""
+This module used to parse patch notes for Overwatch back in the day,
+but Blizzard is dumb so they don't host their own patch note API, and
+the free and open source one that I used to use is no longer online.
+I'm leaving this here in case it's ever useful, but it's doubtful.
+"""
+
 import sys
 import json
 
