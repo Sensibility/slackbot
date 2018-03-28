@@ -8,6 +8,9 @@ from modules.patch.patch import *
 from modules.math.math import uploadLatex
 from modules.recipe.recipe import *
 
+import slacker
+import typing
+
 #use this to add functions to call
 commands = {'!patch': patchFetch,
 			'!math': uploadLatex,
@@ -17,8 +20,16 @@ commands = {'!patch': patchFetch,
 
 
 
-def parseMessage(message, slackAPI, channel, users):
+def parseMessage(message: object,
+                 slackAPI: slacker.Slacker,
+                 channel: object,
+                 users: typing.List[object]) -> typing.Optional[str]:
+	"""
+	Gets the name of a command from the text in a message.
+
+	Returns the output (if any) from the command, to be logged by the bot.
+	"""
 	args = message['text'].split(" ")
-	possible_command = args.pop(0)
-	if possible_command in commands:
-		return commands[possible_command](args,slackAPI,channel,users)
+	possibleCommand = args.pop(0)
+	if possibleCommand in commands:
+		return commands[possibleCommand](args, slackAPI, channel, users)
